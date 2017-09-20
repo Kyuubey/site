@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kyubey-site.iml" filepath="$PROJECT_DIR$/.idea/modules/kyubey-site.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kyubey-site_main.iml" filepath="$PROJECT_DIR$/.idea/modules/kyubey-site_main.iml" group="kyubey-site" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kyubey-site_test.iml" filepath="$PROJECT_DIR$/.idea/modules/kyubey-site_test.iml" group="kyubey-site" />
+    </modules>
+  </component>
+</project>
