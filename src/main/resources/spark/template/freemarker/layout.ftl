@@ -99,7 +99,7 @@
                 </div>
                 <div class="row">
                     <div class="col s3">
-                        <img src="/img/kyubey_logo.png" alt="kyubey_logo.png">
+                        <h5 style="font-family:'Anydore';">Kyubey</h5>
                     </div>
                     <div class="col s3 offset-s6">
                         <span>Design by <a class="kyubey-red-text link" href="https://github.com/sr229">Enra</a></span>
