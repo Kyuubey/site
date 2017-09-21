@@ -28,6 +28,7 @@ dependencies {
     compile "com.sparkjava:spark-core:2.6.0"
     compile "com.sparkjava:spark-kotlin:1.0.0-alpha"
     compile "com.sparkjava:spark-template-velocity:2.5.5"
+    compile group: 'com.rethinkdb', name: 'rethinkdb-driver', version: '2.3.3'
 }
 
 compileKotlin {
