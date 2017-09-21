@@ -1,18 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta og:title="Kyubey">
-    <meta og:description="Do you want to become a magical girl?">
-    <!-- Disable viewport untill I fix the site for mobile devices -->
-    <!--<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">-->
-    <title>Kyubey</title>
-    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link type="text/css" rel="stylesheet" href="/bower_components/materialize/dist/css/materialize.min.css" media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="/css/nerd-fonts-generated.css">
-    <style>html,body{margin:0px;width:100%;height:100%;background-color:#ebebeb!important;}.card{width:99%;}.kyubey-red{background-color:#fd6767!important;}.kyubey-red-text{color:#fd6767!important;}a.link{color:#fd6767!important;}a.link:hover{cursor:pointer;text-decoration:underline;}</style>
-</head>
-<body>
+<#macro main title="Kyubey" desc="Do you want to become a magical girl?" page="">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta og:title="${title}">
+        <meta og:description="Do you want to become a magical girl?">
+        <!-- Disable viewport until I fix the site for mobile devices -->
+        <!--<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">-->
+        <title>${title}</title>
+        <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link type="text/css" rel="stylesheet" href="/bower_components/materialize/dist/css/materialize.min.css" media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="/css/nerd-fonts-generated.css">
+        <style>html,body{margin:0;width:100%;height:100%;background-color:#ebebeb!important;}.card{width:99%;}.kyubey-red{background-color:#fd6767!important;}.kyubey-red-text{color:#fd6767!important;}a.link{color:#fd6767!important;}a.link:hover{cursor:pointer;text-decoration:underline;}@font-face{font-family:'Anydore';src:url("/fonts/Anydore.otf")format("opentype");font-weight:normal;font-style:normal;}</style>
+    </head>
+    <body>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="/bower_components/materialize/dist/js/materialize.min.js"></script>
     <header>
@@ -20,7 +21,7 @@
             <div class="container">
                 <div class="row center">
                     <div class="col s3 m1 offset-m1">
-                        <h4 class="header center-on-small-only">Kyubey</h4>
+                        <h4 style="font-family:'Anydore';" class="header center-on-small-only">Kyubey</h4>
                     </div>
                     <div class="col s6 offset-s3 m6 offset-m3">
                         <br />
@@ -34,8 +35,13 @@
                         <img src="/img/kyubey.png" alt="kyubey.png">
                     </div>
                     <div class="col s3 offset-s3 m6 offset-m3">
-                        <img class="center" src="/img/kyubey_logo.png" alt="kyubey_logo.png">
-                        <h5>FAQ</h5>
+                        <h1 style="font-family:'Anydore';" class="kyubey-red-text">Kyubey</h1>
+                        <#if page == "">
+                            <h5>He'll make your Discord magical!</h5>
+                            <a class="waves-effect waves-light btn kyubey-red" href="/invite"><i class="material-icons left">exit_to_app</i>Invite!</a>
+                        <#else>
+                            <h5>${page}</h5>
+                        </#if>
                     </div>
                 </div>
             </div>
@@ -44,24 +50,7 @@
     <main>
         <div class="section kyubey-red">
             <div class="container">
-                <div class="row">
-                    <ul class="collapsible popout" data-collapsible="accordion">
-                        <li>
-                            <div class="collapsible-header">What prefixes are available for this bot?</div>
-                            <div class="collapsible-body white">
-                                <span>Kyubey has multiple prefixes, <code>k;</code>, <code>k#</code>, <code>kyubey </code> and <code>kyubey pls </code></span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="collapsible-header">Help !! how do I use this bot ??</div>
-                            <div class="collapsible-body white">
-                                <h6>You can execute a command like this:</h6>
-                                <blockquote><code>kyubey pls hug @user</code></blockquote>
-                            </div>
-                        </li>
-                        <!-- TODO add more here -->
-                    </ul>
-                </div>
+                <#nested />
             </div>
         </div>
     </main>
@@ -120,5 +109,6 @@
         </div>
     </footer>
     <script type="text/javascript">$(document).ready(function(){setInterval(function(){$(".carousel.carousel-slider").carousel("next");}, 10000);$(".carousel.carousel-slider").carousel({fullWidth:true});});</script>
-</body>
-</html>
+    </body>
+    </html>
+</#macro>

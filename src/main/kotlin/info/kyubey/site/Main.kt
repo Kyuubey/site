@@ -5,7 +5,7 @@ import spark.ModelAndView
 import spark.kotlin.get
 import spark.kotlin.port
 import spark.kotlin.staticFiles
-import spark.template.velocity.VelocityTemplateEngine
+import spark.template.freemarker.FreeMarkerEngine
 
 class Feature(val name: String = "feature", val description: String = "description")
 
@@ -40,16 +40,20 @@ fun main(args: Array<String>) {
 
         model.put("items", items)
 
-        VelocityTemplateEngine().render(
-                ModelAndView(model, "index.vm")
-        )
+        try {
+            FreeMarkerEngine().render(
+                    ModelAndView(model, "index.ftl")
+            )
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
     }
 
     get("/faq") {
         val model = HashMap<String, Any>()
 
-        VelocityTemplateEngine().render(
-                ModelAndView(model, "faq.vm")
+        FreeMarkerEngine().render(
+                ModelAndView(model, "faq.ftl")
         )
     }
 
@@ -96,8 +100,8 @@ fun main(args: Array<String>) {
             model.put("logs", query)
         }
 
-        VelocityTemplateEngine().render(
-                ModelAndView(model, "logs.vm")
+        FreeMarkerEngine().render(
+                ModelAndView(model, "logs.ftl")
         )
     }
 }
