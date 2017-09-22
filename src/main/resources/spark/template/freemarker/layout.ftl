@@ -6,7 +6,7 @@
         <meta og:title="${title}">
         <meta og:description="Do you want to become a magical girl?">
         <!-- Disable viewport until I fix the site for mobile devices -->
-        <!--<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">-->
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
         <title>${title}</title>
         <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link type="text/css" rel="stylesheet" href="/bower_components/materialize/dist/css/materialize.min.css" media="screen,projection"/>
@@ -20,21 +20,33 @@
         <div class="section">
             <div class="container">
                 <div class="row center">
-                    <div class="col s3 m1 offset-m1">
+                    <div class="col s3 l1 offset-l1">
                         <h4 style="font-family:'Anydore';" class="header center-on-small-only">yube</h4>
                     </div>
-                    <div class="col s6 offset-s3 m6 offset-m3">
+                    <div class="col s1 offset-s7 l6 offset-l3">
                         <br />
-                        <a class="waves-effect waves-teal btn-flat" href="/features">Features</a>
-                        <a class="waves-effect waves-teal btn-flat" href="/support">Support</a>
-                        <a class="waves-effect waves-teal btn-flat" href="/faq">Faq</a>
+                        <a class="hide-on-med-and-down waves-effect waves-teal btn-flat" href="/features">Features</a>
+                        <a class="hide-on-med-and-down waves-effect waves-teal btn-flat" href="/support">Support</a>
+                        <a class="hide-on-med-and-down waves-effect waves-teal btn-flat" href="/faq">FAQ</a>
+                        <ul id="nav-dropdown" class="dropdown-content">
+                            <li>
+                                <a href="/features">Features</a>
+                            </li>
+                            <li>
+                                <a href="/support">Support</a>
+                            </li>
+                            <li>
+                                <a href="/faq">FAQ</a>
+                            </li>
+                        </ul>
+                        <a class="hide-on-large-only dropdown-button btn-flat" href="#" data-activates="nav-dropdown"><i class="material-icons">more_vert</i></a>
                     </div>
                 </div>
                 <div class="row center">
-                    <div class="col s3 m1 offset-m1">
-                        <img src="/img/kyubey.png" alt="kyubey.png">
+                    <div class="col s12 m1">
+                        <img src="/img/kyubey.png" alt="kyubey.png" style="width:250px;">
                     </div>
-                    <div class="col s3 offset-s3 m6 offset-m3">
+                    <div class="col s12 m6 offset-m4">
                         <h1 style="font-family:'Anydore';" class="kyubey-red-text">yube</h1>
                         <#if page == "">
                             <h5>He'll make your Discord magical!</h5>
@@ -58,42 +70,52 @@
         <div class="section">
             <div class="container">
                 <div class="row">
-                    <div class="col s3 m2">
+                    <div class="col s2">
                         <ul>
                             <li>
-                                <h6><a class="btn-floating kyubey-red" href="/support"><i class="material-icons">edit</i></a> FAQ</h6>
+                                <a class="btn-floating kyubey-red" href="/support"><i class="material-icons">edit</i></a>
+                                <span class="hide-on-med-and-down"> FAQ</span>
                             </li>
                             <li>
-                                <h6><a class="btn-floating kyubey-red" href="https://patreon.com/noud"><i class="material-icons">attach_money</i></a> Donate</h6>
+                                <br />
+                            </li>
+                            <li>
+                                <a class="btn-floating kyubey-red" href="https://patreon.com/noud"><i class="material-icons">attach_money</i></a>
+                                <span class="hide-on-med-and-down"> Donate</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="col s3 m2">
+                    <div class="col s2">
                         <ul>
                             <li>
-                                <h6><a class="btn-floating kyubey-red" href="/about"><i class="material-icons">info</i></a> About</h6>
+                                <a class="btn-floating kyubey-red" href="/about"><i class="material-icons">info</i></a>
+                                <span class="hide-on-med-and-down"> About</span>
                             </li>
                             <li>
-                                <h6><a class="btn-floating kyubey-red" href="/invite"><i class="material-icons">exit_to_app</i></a> Invite!</h6>
+                                <br />
+                            </li>
+                            <li>
+                                <a class="btn-floating kyubey-red" href="/invite"><i class="material-icons">exit_to_app</i></a>
+                                <span class="hide-on-med-and-down"> Invite!</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="col s6 m4 offset-m4">
+                    <div class="col s4 offset-s4">
                         <ul>
                             <li>
                                 <a class="black-text" href="https://github.com/Kyuubey/Kyubey"><i class="nf nf-fa-github_square"></i> GitHub</a>
                             </li>
                             <li>
-                                <a class="black-text" href="https://discord.gg/qngdWCZ"><i class="nf nf-fa-phone"></i> Support Server</a>
+                                <a class="black-text" href="https://discord.gg/qngdWCZ"><img src="https://discordapp.com/assets/41484d92c876f76b20c7f746221e8151.svg" height="16" style="margin-left:-3px;margin-bottom:-3px;"><span style="margin-left:2px;">Discord</span></a>
                             </li>
                             <li>
-                                <a class="black-text" href="https://noud02.me"><i class="nf nf-fa-server"></i> noud02's Website</a>
+                                <a class="black-text" href="https://noud02.me"><i class="nf nf-fa-server"></i> noud02.me</a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col s1 offset-s1">
+                    <div class="col s3 offset-s1">
                         <sub>Quick Links</sub>
                     </div>
                 </div>
@@ -101,14 +123,14 @@
                     <div class="col s3">
                         <h5 style="font-family:'Anydore';">yube</h5>
                     </div>
-                    <div class="col s3 offset-s6">
+                    <div class="col s4 offset-s5 m3 offset-m6">
                         <span>Design by <a class="kyubey-red-text link" href="https://github.com/sr229">Enra</a></span>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
-    <script type="text/javascript">$(document).ready(function(){setInterval(function(){$(".carousel.carousel-slider").carousel("next");}, 10000);$(".carousel.carousel-slider").carousel({fullWidth:true});});</script>
+    <script type="text/javascript">$(document).ready(function(){setInterval(function(){$(".carousel.carousel-slider").carousel("next");}, 10000);$(".carousel.carousel-slider").carousel({fullWidth:true});$(".dropdown-button").dropdown();});</script>
     </body>
     </html>
 </#macro>
