@@ -100,7 +100,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col s4 offset-s4">
+                    <div class="col s4 offset-s4 m3 offset-m5">
                         <ul>
                             <li>
                                 <a class="black-text" href="https://github.com/Kyuubey/Kyubey"><i class="nf nf-fa-github_square"></i> GitHub</a>
