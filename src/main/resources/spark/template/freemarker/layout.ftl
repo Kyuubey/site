@@ -21,7 +21,7 @@
             <div class="container">
                 <div class="row center">
                     <div class="col s3 m1 offset-m1">
-                        <h4 style="font-family:'Anydore';" class="header center-on-small-only">Kyubey</h4>
+                        <h4 style="font-family:'Anydore';" class="header center-on-small-only">yube</h4>
                     </div>
                     <div class="col s6 offset-s3 m6 offset-m3">
                         <br />
@@ -35,7 +35,7 @@
                         <img src="/img/kyubey.png" alt="kyubey.png">
                     </div>
                     <div class="col s3 offset-s3 m6 offset-m3">
-                        <h1 style="font-family:'Anydore';" class="kyubey-red-text">Kyubey</h1>
+                        <h1 style="font-family:'Anydore';" class="kyubey-red-text">yube</h1>
                         <#if page == "">
                             <h5>He'll make your Discord magical!</h5>
                             <a class="waves-effect waves-light btn kyubey-red" href="/invite"><i class="material-icons left">exit_to_app</i>Invite!</a>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="row">
                     <div class="col s3">
-                        <h5 style="font-family:'Anydore';">Kyubey</h5>
+                        <h5 style="font-family:'Anydore';">yube</h5>
                     </div>
                     <div class="col s3 offset-s6">
                         <span>Design by <a class="kyubey-red-text link" href="https://github.com/sr229">Enra</a></span>
