@@ -33,7 +33,7 @@ fun main(args: Array<String>) {
         for (i in 0 until 4) {
             val features = mutableListOf<Feature>()
             for (x in 0 until 4) {
-                features.add(Feature())
+                features.add(Feature("Lorem ipsum", "Lorem ipsum dolor sit amet, appetere gubergren eloquentiam sit id, ne his idque detracto intellegat. Sed an soluta detracto torquatos. Mea ex assum omittam, ne decore iisque scripta usu. Alterum ocurreret vis ne, rebum graeci ut mea."))
             }
             items.add(Item(features))
         }
