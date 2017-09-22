@@ -1,24 +1,27 @@
 <#import "layout.ftl" as layout>
 
 <@layout.main>
-    <div class="row center">
-        <div class="carousel carousel-slider center" data-indicators="true">
+    <div class="row">
+        <div class="carousel carousel-slider" data-indicators="true">
             <#list items as item>
                 <div class="carousel-item kyubey-red white-text" href="#carousel!">
-                    <h2>${item.title}</h2>
-                    <div class="row center">
+                    <h2 class="center">${item.title}</h2>
+                    <div class="row">
                         <#list item.features as feature>
-                            <div class="col s3 center">
+                            <div class="col s3">
                                 <div class="card">
-                                    <div class="card-content red white-text">
+                                    <div class="card-image red white-text">
                                         <br />
                                         <br />
                                         <br />
                                         <br />
                                     </div>
-                                    <div class="card-action black-text">
+                                    <div class="card-content black-text">
                                         <span class="card-title">${feature.name}</span>
-                                        <p>${feature.description}</p>
+                                        <p class="truncate">${feature.description}</p>
+                                    </div>
+                                    <div class="card-action">
+                                        <a href="/features#${feature.name}">More</a>
                                     </div>
                                 </div>
                             </div>
