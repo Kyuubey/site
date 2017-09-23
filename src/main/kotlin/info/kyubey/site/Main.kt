@@ -101,7 +101,7 @@ fun main(args: Array<String>) {
         }
 
         FreeMarkerEngine().render(
-                ModelAndView(model, "logs.ftl")
+                ModelAndView(model, "logs-v2.ftl")
         )
     }
 }
