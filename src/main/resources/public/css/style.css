@@ -1,0 +1,76 @@
+* {
+    font-family: 'Noto Sans', 'Roboto', sans-serif
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ebebeb !important;
+}
+
+.card {
+    width: 99%;
+    border-radius: 5px;
+}
+
+.card .card-image {
+    border-radius: 5px 5px 0 0;
+}
+
+.card .card-action:last-child {
+    border-radius: 0 0 5px 5px;
+}
+
+.kyubey-red {
+    background-color: #fd6767 !important;
+}
+
+.kyubey-red-text {
+    color: #fd6767 !important;
+}
+
+a.link {
+    color: #fd6767 !important;
+}
+
+.kyubey-greyish {
+    background-color: #ebebeb !important;
+}
+
+.kyubey-greyish-text {
+    color: #ebebeb !important;
+}
+
+.kyubey-pink {
+    background-color: #db79fb !important;
+}
+
+.kyubey-pink-text {
+    color: #db79fb !important;
+}
+
+a.link:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+@font-face {
+    font-family: 'Anydore';
+    src: url("/fonts/Anydore.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.emoji {
+    height: 25px;
+}
+
+.hljs {
+    background: #ebebeb;
+}
+
+pre * {
+    font-family: 'Roboto Mono', monospace;
+}
