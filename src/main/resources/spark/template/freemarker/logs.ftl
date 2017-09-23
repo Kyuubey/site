@@ -7,9 +7,13 @@
                 <div class="col s1">
                     <img class="circle" src="${data.author.avatarURL}" alt="avatar" height="75">
                 </div>
-                <div class="col s11">
+                <div class="col s10">
                     <h5 class="truncate">${data.author.username}</h5>
                     <span>${data.contentHTML}</span>
+                </div>
+                <div class="col s1">
+                    <h6>${data.event}</h6>
+                    <span class="momentify">${data.timestamp}</span>
                 </div>
             </div>
         </div>
@@ -26,8 +30,8 @@
                             <#case "DELETE">
                                 <@logitem log "kyubey-red" />
                                 <#break>
-                            <#case "EDIT">
-                                <@logitem log "kyubey-orange" />
+                            <#case "UPDATE">
+                                <@logitem log "kyubey-pink" />
                                 <#break>
                             <#default>
                                 <@logitem log />
