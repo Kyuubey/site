@@ -28,6 +28,8 @@ dependencies {
     compile "com.sparkjava:spark-core:2.6.0"
     compile "com.sparkjava:spark-kotlin:1.0.0-alpha"
     compile "com.sparkjava:spark-template-freemarker:2.5.5"
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.8.0-alpha2'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-alpha2'
     compile group: 'com.rethinkdb', name: 'rethinkdb-driver', version: '2.3.3'
 }
 
