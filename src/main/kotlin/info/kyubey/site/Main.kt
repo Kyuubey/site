@@ -1,10 +1,9 @@
 package info.kyubey.site
 
 import com.rethinkdb.RethinkDB
+import org.slf4j.LoggerFactory
 import spark.ModelAndView
-import spark.kotlin.get
-import spark.kotlin.port
-import spark.kotlin.staticFiles
+import spark.kotlin.*
 import spark.template.freemarker.FreeMarkerEngine
 
 class Feature(val name: String = "feature", val description: String = "description")
@@ -15,6 +14,7 @@ fun main(args: Array<String>) {
     port(1991)
     staticFiles.location("/public")
 
+    val logger = LoggerFactory.getLogger("main")
     val r = RethinkDB.r
 
     // TODO switch to PostgreSQL once rewrite is up
@@ -24,6 +24,10 @@ fun main(args: Array<String>) {
             .db(System.getenv("KYUBEY_DB_NAME"))
             .user(System.getenv("KYUBEY_DB_USER"), System.getenv("KYUBEY_DB_PASS"))
             .connect()
+
+    before {
+        logger.info("${request.protocol()} ${request.ip()} ${request.requestMethod()} ${request.pathInfo()}?${request.queryString()}")
+    }
 
     get("/") {
         val model = HashMap<String, Any>()
@@ -96,6 +100,31 @@ fun main(args: Array<String>) {
                 // this is safe, trust me
                 (it as Map<String, Any>)["timestamp"].toString().toBigInteger() <= request.params(":timestamp").toBigInteger()
             }
+
+            if (request.queryParams("event") != null)
+                query = query.filter {
+                    request.queryParamsValues("event").any { event -> (it as Map<String, Any>)["event"].toString().toLowerCase() == event.toLowerCase() }
+                }
+
+            if (request.queryParams("user") != null)
+                query = query.filter {
+                    request.queryParamsValues("user").any { user -> ((it as Map<String, Any>)["author"] as Map<String, Any>)["id"] == user }
+                }
+
+            if (request.queryParams("keyword") != null)
+                query = query.filter {
+                    request.queryParamsValues("keyword").any { keyword -> (it as Map<String, Any>)["content"].toString().toLowerCase().contains(keyword.toLowerCase()) }
+                }
+
+            if (request.queryParams("end_timestamp") != null)
+                query = query.filter {
+                    (it as Map<String, Any>)["timestamp"].toString().toBigInteger() < request.queryParams("end_timestamp").toBigInteger()
+                }
+
+            if (request.queryParams("exclude_event") != null)
+                query = query.filter {
+                    request.queryParamsValues("exclude_event").any { event -> (it as Map<String, Any>)["event"].toString().toLowerCase() != event.toLowerCase() }
+                }
 
             model.put("logs", query)
         }
