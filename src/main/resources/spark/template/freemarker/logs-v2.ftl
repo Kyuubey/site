@@ -1,7 +1,7 @@
 <#import "layout.ftl" as layout>
 
 <#macro logitem data color="white">
-    <div class="card ${color}">
+    <div class="card hoverable ${color}" id="${data.id?split(" ")[0]}">
         <div class="card-content">
             <div class="row">
                 <div class="hide-on-med-and-down col l1">
@@ -12,8 +12,57 @@
                     <p class="markup" style="word-wrap:break-word;">${data.content}</p>
                     <#list data.embeds as embed>
                         <#if embed.type == "rich">
-                            <!-- TODO: embeds, probb gonna use discords css here again -->
-                            <div>insert embed here</div>
+                            <div class="embed-wrapper">
+                                <div class="embed embed-color z-depth-2" color="${embed.color???then(embed.color, "4095")}"></div>
+                                <div class="embed embed-content z-depth-2">
+                                    <div class="inner-content">
+                                        <#if embed.author??>
+                                            <div class="embed-author">
+                                                <#if embed.author.icon_url??>
+                                                    <img class="embed-author-icon" src="${embed.author.icon_url}" alt="icon">
+                                                </#if>
+                                                <#if embed.author.name??>
+                                                    <a class="embed-author-name link" href="${embed.author.url???then(embed.author.url, "#")}">${embed.author.name}</a>
+                                                </#if>
+                                            </div>
+                                        </#if>
+                                        <#if embed.title??>
+                                            <a class="embed-title link" href="${embed.url???then(embed.url, "#")}">${embed.title}</a>
+                                        </#if>
+                                        <#if embed.description??>
+                                            <div class="embed-description markup">${embed.description}</div>
+                                        </#if>
+                                        <#if embed.fields??>
+                                            <#list embed.fields as field>
+                                                <div class="embed-field${field.inline???then(" field-inline", "")}">
+                                                    <div class="embed-field-title">${field.name}</div>
+                                                    <#if field.value??>
+                                                        <div class="embed-field-markup markup">${field.value}</div>
+                                                    </#if>
+                                                </div>
+                                            </#list>
+                                        </#if>
+                                        <#if embed.image??>
+                                            <br />
+                                            <br />
+                                            <img class="embed-image" src="${embed.image.url}" alt="image">
+                                        </#if>
+                                        <#if embed.footer??>
+                                            <br />
+                                            <br />
+                                            <div class="embed-footer left">
+                                                <#if embed.footer.icon_url??>
+                                                    <img class="embed-footer-icon" src="${embed.footer.icon_url}" alt="icon">
+                                                </#if>
+                                                <a class="embed-footer-text link" href="${embed.footer.url???then(embed.footer.url, "#")}">${embed.footer.text}</a>
+                                            </div>
+                                        </#if>
+                                    </div>
+                                    <#if embed.thumbnail??>
+                                        <img class="embed-thumbnail" src="${embed.thumbnail.url}" alt="thumb">
+                                    </#if>
+                                </div>
+                            </div>
                         </#if>
                     </#list>
                     <#list data.attachments as attachment>
