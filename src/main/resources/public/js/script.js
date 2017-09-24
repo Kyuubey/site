@@ -1,3 +1,23 @@
+function emoteParser (string, customClass) {
+    let el;
+
+    if (string instanceof HTMLElement) {
+        el = string;
+        string = string.innerHTML;
+    }
+
+    const regex = /&lt;\:([^:]+)\:(\d+)&gt;/i;
+
+    while (regex.test(string)) {
+        const matches = string.match(regex);
+        const src = `https://cdn.discordapp.com/emojis/${matches[2]}.png`;
+        string = string.replace(regex, `<img class="${customClass || "emoji"}" src="${src}" alt="${matches[1]}">`);
+    }
+
+    if (el) el.innerHTML = string;
+    else return string;
+}
+
 $(document).ready(function(){
     hljs.configure({
         classPrefix:"hljs-",
@@ -6,7 +26,7 @@ $(document).ready(function(){
     var md = markdownit({
         html: false,
         xhtmlOut: false,
-        breaks: false,
+        breaks: true,
         linkify: true,
         typographer: false,
         highlight: function (str, lang) {
@@ -36,5 +56,17 @@ $(document).ready(function(){
     $(".markup").each(function(i,e){
         e.innerHTML = md.render(e.innerHTML);
     });
+    $(".embed-color").each(function (i, el) {
+        el.style['background-color'] = `#${Number(el.getAttribute("color")).toString(16)}`;
+    });
+    $("#we-dont-like-ads-too").pushpin({
+        top: window.height - 10
+    }).find(".close").on("click", function () {
+        $("#we-dont-like-ads-too").remove();
+    });
+    setTimeout(function() {
+        $("#we-dont-like-ads-too").remove();
+    }, 75000);
     twemoji.parse(document.body);
+    emoteParser(document.body);
 });
