@@ -45,12 +45,60 @@
 </header>
 </#macro>
 
-<#macro main page="">
+<#macro logs page="">
+<div id="filter-modal" class="modal">
+    <div class="modal-content">
+        <h4>Filters</h4>
+        <div class="row">
+            <div class="col s12 l4">
+                <h5>Time</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label for="timestamp-filter-start">Timestamp start</label>
+                        <input type="text" class="timepicker" id="timestamp-filter-start">
+                    </div>
+                    <div class="input-field col s12">
+                        <label for="timestamp-filter-end">Timestamp end</label>
+                        <input type="text" class="timepicker" id="timestamp-filter-end">
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 l8">
+                <h5>Other</h5>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select id="events-filter" multiple>
+                            <option value="" disabled selected>Select events</option>
+                            <option value="delete">Deleted</option>
+                            <option value="create">Created</option>
+                            <option value="update">Edited</option>
+                        </select>
+                        <label>Events</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <label for="user-filter">User ID</label>
+                        <input type="text" id="user-filter">
+                    </div>
+                    <div class="input-field col s6">
+                        <label for="keyword-filter">Keywords (use "," to split)</label>
+                        <input type="text" id="keyword-filter">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="modal-action modal-close waves-effect waves-teal btn-flat" id="apply-log-filters">Apply</a>
+    </div>
+</div>
 <header>
     <nav class="kyubey-red">
         <div class="nav-wrapper">
             <a href="/" class="brand-logo" style="font-family:'Anydore';margin-left:10px;">yube</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li>
+                    <a class="modal-trigger" href="#filter-modal"><i class="material-icons">filter_list</i></a>
+                </li>
                 <li>
                     <a href="#"><i class="material-icons">more_vert</i></a>
                 </li>
