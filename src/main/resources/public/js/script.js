@@ -23,7 +23,7 @@ $(document).ready(function(){
         classPrefix:"hljs-",
         tabReplace:"    "
     });
-    var md = markdownit({
+    const md = markdownit({
         html: false,
         xhtmlOut: false,
         breaks: true,
@@ -38,12 +38,14 @@ $(document).ready(function(){
 
             return '';
         }
-    })
+    });
+    $(".carousel.carousel-slider").carousel({fullWidth:true});
+    $(".dropdown-button").dropdown();
+    $(".modal").modal();
+    $("select").material_select();
     setInterval(function(){
         $(".carousel.carousel-slider").carousel("next");
     }, 10000);
-    $(".carousel.carousel-slider").carousel({fullWidth:true});
-    $(".dropdown-button").dropdown();
     $("pre code").each(function(i,b){
         hljs.highlightBlock(b);
     });
@@ -56,17 +58,44 @@ $(document).ready(function(){
     $(".markup").each(function(i,e){
         e.innerHTML = md.render(e.innerHTML);
     });
+    $(".has-emotes").each(function(i,e){
+        emoteParser(e);
+    });
     $(".embed-color").each(function (i, el) {
         el.style['background-color'] = `#${Number(el.getAttribute("color")).toString(16)}`;
     });
-    $("#we-dont-like-ads-too").pushpin({
-        top: window.height - 10
-    }).find(".close").on("click", function () {
+    $("#we-dont-like-ads-too .close").on("click", function () {
         $("#we-dont-like-ads-too").remove();
     });
+    $('.timepicker').pickatime({
+        default: 'now',
+        fromnow: 0,
+        twelvehour: false,
+        donetext: 'OK',
+        cleartext: 'Clear',
+        canceltext: 'Cancel',
+        autoclose: false,
+        ampmclickable: true
+    });
+
+    $("#apply-log-filters").on("click", function(e) {
+        const events = $("#events-filter").val();
+        const users = $("#user-filter").val().split(/,\s?/i);
+        const keywords = $("#keyword-filter").val().split(/,\s?/i);
+        let qs = "";
+
+        for (const event of events) if (event !== "") qs += `${qs.length > 1 && "&" || "?"}event=${escape(event)}`;
+        for (const user of users) if (user !== "") qs += `${qs.length > 1 && "&" || "?"}user=${escape(user)}`;
+        for (const keyword of keywords) if (keyword !== "") qs += `${qs.length > 1 && "&" || "?"}keyword=${escape(keyword)}`;
+
+        window.location.search = qs;
+    });
+
     setTimeout(function() {
         $("#we-dont-like-ads-too").remove();
     }, 75000);
+    $("#we-dont-like-ads-too").pushpin({
+        top: window.height - 10
+    });
     twemoji.parse(document.body);
-    emoteParser(document.body);
 });

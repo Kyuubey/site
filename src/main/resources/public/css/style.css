@@ -251,3 +251,7 @@ pre * {
 #we-dont-like-ads-too .close:hover {
     cursor: pointer;
 }
+
+.dropdown-content li>span>label {
+    top: -11px !important;
+}
