@@ -40,7 +40,7 @@
 </html>
 </#macro>
 
-<#macro other title="Kyubey" desc="Do you want to become a magical girl?" page="">
+<#macro logs title="Kyubey" desc="Do you want to become a magical girl?" page="">
 <!DOCTYPE html>
 <html>
     <head>
@@ -65,7 +65,7 @@
     </head>
     <body>
         <@donate.pushpin />
-        <@header.main />
+        <@header.logs />
         <main>
             <div class="section kyubey-greyish">
                 <div class="container">
