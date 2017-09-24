@@ -9,7 +9,7 @@
                 </div>
                 <div class="col s11 l9">
                     <h6 class="truncate" style="font-size:20px;font-weight:lighter;">${data.author.username}#${data.author.discriminator}</h6>
-                    <p class="markup" style="word-wrap:break-word;">${data.content}</p>
+                    <p class="markup has-emotes" style="word-wrap:break-word;">${data.content}</p>
                     <#list data.embeds as embed>
                         <#if embed.type == "rich">
                             <div class="embed-wrapper">
@@ -27,17 +27,17 @@
                                             </div>
                                         </#if>
                                         <#if embed.title??>
-                                            <a class="embed-title link" href="${embed.url???then(embed.url, "#")}">${embed.title}</a>
+                                            <a class="embed-title has-emotes link" href="${embed.url???then(embed.url, "#")}">${embed.title}</a>
                                         </#if>
                                         <#if embed.description??>
-                                            <div class="embed-description markup">${embed.description}</div>
+                                            <div class="embed-description has-emotes markup">${embed.description}</div>
                                         </#if>
                                         <#if embed.fields??>
                                             <#list embed.fields as field>
                                                 <div class="embed-field${field.inline???then(" field-inline", "")}">
-                                                    <div class="embed-field-title">${field.name}</div>
+                                                    <div class="embed-field-title has-emotes">${field.name}</div>
                                                     <#if field.value??>
-                                                        <div class="embed-field-markup markup">${field.value}</div>
+                                                        <div class="embed-field-markup has-emotes markup">${field.value}</div>
                                                     </#if>
                                                 </div>
                                             </#list>
@@ -54,7 +54,7 @@
                                                 <#if embed.footer.icon_url??>
                                                     <img class="embed-footer-icon" src="${embed.footer.icon_url}" alt="icon">
                                                 </#if>
-                                                <a class="embed-footer-text link" href="${embed.footer.url???then(embed.footer.url, "#")}">${embed.footer.text}</a>
+                                                <a class="embed-footer-text has-emotes link" href="${embed.footer.url???then(embed.footer.url, "#")}">${embed.footer.text}</a>
                                             </div>
                                         </#if>
                                     </div>
@@ -97,32 +97,41 @@
     </div>
 </#macro>
 
-<@layout.other "Kyubey - Logs" ":eyes:" "Logs">
-    <div class="row">
-        <div class="col s12 l4">
-            <h5 style="font-weight:bold;">Logs for ${logs[0].guild.name}</h5>
-            <p>Channel: #${logs[0].channel.name}</p>
-            <p>Last message: <span class="momentify">${logs[0].timestamp}</span></p>
+<@layout.logs "Kyubey - Logs" ":eyes:" "Logs">
+    <#if (logs?size > 0)>
+        <div class="row">
+            <div class="col s12 l4">
+                <h5 style="font-weight:bold;">Logs for ${logs[0].guild.name}</h5>
+                <p>Channel: #${logs[0].channel.name}</p>
+                <p>Last message: <span class="momentify">${logs[0].timestamp}</span></p>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col s12">
-            <ul>
-                <#list logs as log>
-                    <li>
-                        <#switch log.event>
-                            <#case "DELETE">
-                                <@logitem log "kyubey-red" />
-                                <#break>
-                            <#case "UPDATE">
-                                <@logitem log "kyubey-pink" />
-                                <#break>
-                            <#default>
-                                <@logitem log />
-                        </#switch>
-                    </li>
-                </#list>
-            </ul>
+        <div class="row">
+            <div class="col s12">
+                <ul>
+                    <#list logs as log>
+                        <li>
+                            <#switch log.event>
+                                <#case "DELETE">
+                                    <@logitem log "kyubey-red" />
+                                    <#break>
+                                <#case "UPDATE">
+                                    <@logitem log "kyubey-pink" />
+                                    <#break>
+                                <#default>
+                                    <@logitem log />
+                            </#switch>
+                        </li>
+                    </#list>
+                </ul>
+            </div>
         </div>
-    </div>
-</@layout.other>
+    <#else>
+        <div class="row">
+            <div class="s12 center">
+                <h3>:<</h3>
+                <h5>No logs were found.</h5>
+            </div>
+        </div>
+    </#if>
+</@layout.logs>
