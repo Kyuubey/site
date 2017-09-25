@@ -3,10 +3,10 @@
     <div class="section">
         <div class="container">
             <div class="row center">
-                <div class="col s3 l1 offset-l1">
+                <div class="col left">
                     <h4 style="font-family:'Anydore';" class="header kyubey-red-text center-on-small-only">yube</h4>
                 </div>
-                <div class="col s1 offset-s6 l6 offset-l3">
+                <div class="col right">
                     <br />
                     <a class="hide-on-med-and-down waves-effect waves-teal btn-flat" href="/features">Features</a>
                     <a class="hide-on-med-and-down waves-effect waves-teal btn-flat" href="/support">Support</a>
@@ -27,10 +27,10 @@
                 </div>
             </div>
             <div class="row center">
-                <div class="col s12 m1">
+                <div class="col s12 m1 left">
                     <img src="/img/kyubey.png" alt="kyubey.png" style="width:250px;">
                 </div>
-                <div class="col s12 m6 offset-m4">
+                <div class="col s12 m6 right">
                     <h1 style="font-family:'Anydore';" class="kyubey-red-text">yube</h1>
                     <#if page == "">
                         <h5>He'll make your Discord magical!</h5>

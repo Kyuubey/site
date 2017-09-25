@@ -3,7 +3,7 @@
     <div class="section">
         <div class="container">
             <div class="row">
-                <div class="col s2">
+                <div class="col left">
                     <ul>
                         <li>
                             <a class="btn-floating kyubey-red" href="/support"><i class="material-icons">edit</i></a>
@@ -18,7 +18,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col s2">
+                <div class="col left">
                     <ul>
                         <li>
                             <a class="btn-floating kyubey-red" href="/about"><i class="material-icons">info</i></a>
@@ -33,7 +33,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col s4 offset-s4 m3 offset-m5">
+                <div class="col right">
                     <ul>
                         <li>
                             <a class="black-text" href="https://github.com/Kyuubey/Kyubey"><i class="nf nf-fa-github_square"></i> GitHub</a>
@@ -53,10 +53,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col s3">
+                <div class="col left">
                     <h5 class="kyubey-red-text" style="font-family:'Anydore';">yube</h5>
                 </div>
-                <div style="margin-top:15px;" class="col s4 offset-s5 m3 offset-m6">
+                <div style="margin-top:15px;" class="col right">
                     <span>Design by <a class="kyubey-red-text link" href="https://github.com/sr229">Enra</a></span>
                 </div>
             </div>
