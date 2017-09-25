@@ -53,6 +53,9 @@ fun main(args: Array<String>) {
         }
     }
 
+    redirect.get("/invite", "https://discordapp.com/oauth2/authorize?client_id=236829027539746817&scope=bot&permissions=3468486")
+    redirect.get("/support", "https://discord.gg/qngdWCZ")
+
     get("/faq") {
         val model = HashMap<String, Any>()
 
