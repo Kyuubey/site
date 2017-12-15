@@ -5,11 +5,14 @@
 ```bash
 # Clone the repo
 $ git clone https://github.com/Kyuubey/site kyubey-site && cd kyubey-site
-# Set ENV
-$ export KYUBEY_DB_NAME=Kyubey
-$ export KYUBEY_DB_USER=admin
-$ export KYUBEY_DB_PASS=RETHINKDB_PASSWORD
-$ export KYUBEY_DB_HOST=localhost
-# Run it!
-$ gradle run
+
+# Config
+$ cp -v config.example.yml config.yml
+# Use your favorite editor to edit the config
+
+# Build it
+$ ./gradlew build
+
+# Run it
+$ java -jar build/libs/KyubeySite.jar
 ```
