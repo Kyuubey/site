@@ -1,11 +1,10 @@
-group 'me.noud02'
+group 'info.kyubey'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.2-M2'
+    ext.kotlin_version = '1.2.0'
 
     repositories {
-        maven { url 'http://dl.bintray.com/kotlin/kotlin-eap-1.2' }
         mavenCentral()
         jcenter()
     }
@@ -22,18 +21,28 @@ apply plugin: 'application'
 mainClassName = 'info.kyubey.site.MainKt'
 
 repositories {
-    maven { url 'http://dl.bintray.com/kotlin/kotlin-eap-1.2' }
     mavenCentral()
+    jcenter()
+    maven { url = 'https://dl.bintray.com/kotlin/exposed' }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-    compile "com.sparkjava:spark-core:2.6.0"
-    compile "com.sparkjava:spark-kotlin:1.0.0-alpha"
-    compile "com.sparkjava:spark-template-freemarker:2.5.5"
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.8.0-alpha2'
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-alpha2'
-    compile group: 'com.rethinkdb', name: 'rethinkdb-driver', version: '2.3.3'
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.20'
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:0.20'
+    compile 'com.sparkjava:spark-core:2.6.0'
+    compile 'com.sparkjava:spark-kotlin:1.0.0-alpha'
+    compile 'com.sparkjava:spark-template-freemarker:2.5.5'
+    compile 'org.slf4j:slf4j-api:1.8.0-alpha2'
+    compile 'org.slf4j:slf4j-simple:1.8.0-alpha2'
+    // compile 'com.rethinkdb:rethinkdb-driver:2.3.3'
+    compile 'org.jetbrains.exposed:exposed:0.9.1'
+    compile 'org.postgresql:postgresql:42.1.4'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
+    compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0'
+    compile 'org.json:json:20171018'
 }
 
 compileKotlin {
@@ -41,4 +50,14 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
+shadowJar {
+    archiveName = 'KyubeySite.jar'
 }
