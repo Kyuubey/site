@@ -1,29 +1,58 @@
 package info.kyubey.site
 
-import com.rethinkdb.RethinkDB
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.readValue
+import info.kyubey.site.db.schema.Logs
+// import com.rethinkdb.RethinkDB
+import info.kyubey.site.entities.Config
+import info.kyubey.site.entities.Log
+import me.aurieh.ares.exposed.async.asyncTransaction
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.select
 import org.slf4j.LoggerFactory
 import spark.ModelAndView
 import spark.kotlin.*
 import spark.template.freemarker.FreeMarkerEngine
+import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
-class Feature(val name: String = "feature", val description: String = "description")
+data class Feature(val name: String = "feature", val description: String = "description")
 
-class Item(val features: List<Feature>, val title: String = "Features")
+data class Item(val features: List<Feature>, val title: String = "Features")
 
 fun main(args: Array<String>) {
-    port(1991)
+    val mapper = ObjectMapper(YAMLFactory()).apply { registerModule(KotlinModule()) }
+    val config = mapper.readValue<Config>(File("./config.yml"))
+    val logger = LoggerFactory.getLogger("main")
+    val db = Database.connect(
+            "jdbc:postgresql://${config.database.host}/${config.database.name}",
+            "org.postgresql.Driver",
+            config.database.user,
+            config.database.pass
+    )
+    val pool: ExecutorService by lazy {
+        Executors.newCachedThreadPool {
+            Thread(it, "Akatsuki-Pool-Thread").apply {
+                isDaemon = true
+            }
+        }
+    }
+
+    port(config.port)
     staticFiles.location("/public")
 
-    val logger = LoggerFactory.getLogger("main")
-    val r = RethinkDB.r
+    /*val r = RethinkDB.r*/
 
-    // TODO switch to PostgreSQL once rewrite is up
-
-    val conn = r.connection()
+    /*val conn = r.connection()
             .hostname(System.getenv("KYUBEY_DB_HOST"))
             .db(System.getenv("KYUBEY_DB_NAME"))
             .user(System.getenv("KYUBEY_DB_USER"), System.getenv("KYUBEY_DB_PASS"))
-            .connect()
+            .connect()*/
 
     before {
         logger.info("${request.protocol()} ${request.ip()} ${request.requestMethod()} ${request.pathInfo()}?${request.queryString()}")
@@ -53,8 +82,8 @@ fun main(args: Array<String>) {
         }
     }
 
-    redirect.get("/invite", "https://discordapp.com/oauth2/authorize?client_id=236829027539746817&scope=bot&permissions=3468486")
-    redirect.get("/support", "https://discord.gg/qngdWCZ")
+    redirect.get("/invite", config.botInvite)
+    redirect.get("/support", config.guildInvite)
 
     get("/faq") {
         val model = HashMap<String, Any>()
@@ -66,74 +95,82 @@ fun main(args: Array<String>) {
 
     get("/logs/:channel/:timestamp") {
         val model = HashMap<String, Any>()
+        val timestamp = request.params(":timestamp").toLong()
 
-        // val first = request.params(":timestamp").toBigInteger() - 7200000.toBigInteger()
-        var query: List<Any>? = null
-
-        try {
-            query = r
-                    .table("Logs")
-                    .orderBy().optArg("index", r.desc("timestamp"))
-                    .filter { log ->
-                        log
-                                .g("channel")
-                                .g("id")
-                                .eq(request.params(":channel"))
-                                // FIXME meme
-                                /*.and(
-                                        log
-                                                .g("timestamp")
-                                                .lt(request.params(":timestamp").toBigInteger())
-                                )
-                                .and(
-                                        log
-                                                .g("timestamp")
-                                                .gt(first)
-                                )*/
-                    }
-                    .limit(100)
-                    .coerceTo("array")
-                    .run<List<Any>>(conn)
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
-
-        if (query != null) {
-            query = query.filter {
-                // this is safe, trust me
-                (it as Map<String, Any>)["timestamp"].toString().toBigInteger() <= request.params(":timestamp").toBigInteger()
-            }
+        asyncTransaction(pool) {
+            val query = Logs.select {
+                Logs.channelId.eq(request.params(":channel").toLong()) and
+                        Logs.timestamp.between(timestamp - 7200000, timestamp)
+            }.limit(
+                    request.queryParamOrDefault("limit", "100").toIntOrNull() ?: 100
+            )
+            var logsRaw: List<ResultRow> = query.toList()
 
             if (request.queryParams("event") != null)
-                query = query.filter {
-                    request.queryParamsValues("event").any { event -> (it as Map<String, Any>)["event"].toString().toLowerCase() == event.toLowerCase() }
+                logsRaw = logsRaw.filter {
+                    request.queryParamsValues("event").any {
+                        e -> it[Logs.event] == e
+                    }
                 }
 
-            if (request.queryParams("user") != null)
+            val logs = logsRaw.map {
+                Log(
+                        it[Logs.event],
+                        it[Logs.messageId],
+                        it[Logs.content],
+                        it[Logs.attachments].toList(),
+                        it[Logs.embeds].map { it.toMap() },
+                        it[Logs.timestamp],
+                        it[Logs.authorId],
+                        it[Logs.authorName],
+                        it[Logs.authorDiscrim],
+                        it[Logs.authorAvatar],
+                        it[Logs.authorNick],
+                        it[Logs.guildId],
+                        it[Logs.guildName],
+                        it[Logs.channelId],
+                        it[Logs.channelName]
+                )
+            }
+
+
+            /*if (query != null) {
                 query = query.filter {
-                    request.queryParamsValues("user").any { user -> ((it as Map<String, Any>)["author"] as Map<String, Any>)["id"] == user }
+                    // this is safe, trust me
+                    (it as Map<String, Any>)["timestamp"].toString().toBigInteger() <= request.params(":timestamp").toBigInteger()
                 }
 
-            if (request.queryParams("keyword") != null)
-                query = query.filter {
-                    request.queryParamsValues("keyword").any { keyword -> (it as Map<String, Any>)["content"].toString().toLowerCase().contains(keyword.toLowerCase()) }
-                }
+                if (request.queryParams("event") != null)
+                    query = query.filter {
+                        request.queryParamsValues("event").any { event -> (it as Map<String, Any>)["event"].toString().toLowerCase() == event.toLowerCase() }
+                    }
 
-            if (request.queryParams("end_timestamp") != null)
-                query = query.filter {
-                    (it as Map<String, Any>)["timestamp"].toString().toBigInteger() < request.queryParams("end_timestamp").toBigInteger()
-                }
+                if (request.queryParams("user") != null)
+                    query = query.filter {
+                        request.queryParamsValues("user").any { user -> ((it as Map<String, Any>)["author"] as Map<String, Any>)["id"] == user }
+                    }
 
-            if (request.queryParams("exclude_event") != null)
-                query = query.filter {
-                    request.queryParamsValues("exclude_event").any { event -> (it as Map<String, Any>)["event"].toString().toLowerCase() != event.toLowerCase() }
-                }
+                if (request.queryParams("keyword") != null)
+                    query = query.filter {
+                        request.queryParamsValues("keyword").any { keyword -> (it as Map<String, Any>)["content"].toString().toLowerCase().contains(keyword.toLowerCase()) }
+                    }
 
-            model.put("logs", query)
-        }
+                if (request.queryParams("end_timestamp") != null)
+                    query = query.filter {
+                        (it as Map<String, Any>)["timestamp"].toString().toBigInteger() < request.queryParams("end_timestamp").toBigInteger()
+                    }
 
-        FreeMarkerEngine().render(
-                ModelAndView(model, "logs-v2.ftl")
-        )
+                if (request.queryParams("exclude_event") != null)
+                    query = query.filter {
+                        request.queryParamsValues("exclude_event").any { event -> (it as Map<String, Any>)["event"].toString().toLowerCase() != event.toLowerCase() }
+                    }
+                    */
+
+            model.put("logs", logs)
+
+            FreeMarkerEngine().render(
+                    ModelAndView(model, "logs-v2.ftl")
+            )
+        }.execute().get()
     }
 }
