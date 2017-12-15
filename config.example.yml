@@ -1,0 +1,8 @@
+port: 1337
+botInvite: bot invite
+guildInvite: discord invite
+database:
+  host: db host
+  pass: db pass
+  user: db user
+  name: db name
