@@ -169,7 +169,7 @@ fun main(args: Array<String>) {
             model.put("logs", logs)
 
             FreeMarkerEngine().render(
-                    ModelAndView(model, "logs-v2.ftl")
+                    ModelAndView(model, "logs.ftl")
             )
         }.execute().get()
     }
