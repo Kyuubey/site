@@ -36,7 +36,6 @@ dependencies {
     compile 'com.sparkjava:spark-template-freemarker:2.5.5'
     compile 'org.slf4j:slf4j-api:1.8.0-alpha2'
     compile 'org.slf4j:slf4j-simple:1.8.0-alpha2'
-    // compile 'com.rethinkdb:rethinkdb-driver:2.3.3'
     compile 'org.jetbrains.exposed:exposed:0.9.1'
     compile 'org.postgresql:postgresql:42.1.4'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
