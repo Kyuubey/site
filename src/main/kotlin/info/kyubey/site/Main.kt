@@ -5,7 +5,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import info.kyubey.site.db.schema.Logs
-// import com.rethinkdb.RethinkDB
 import info.kyubey.site.entities.Config
 import info.kyubey.site.entities.Log
 import me.aurieh.ares.exposed.async.asyncTransaction
@@ -46,16 +45,23 @@ fun main(args: Array<String>) {
     port(config.port)
     staticFiles.location("/public")
 
-    /*val r = RethinkDB.r*/
-
-    /*val conn = r.connection()
-            .hostname(System.getenv("KYUBEY_DB_HOST"))
-            .db(System.getenv("KYUBEY_DB_NAME"))
-            .user(System.getenv("KYUBEY_DB_USER"), System.getenv("KYUBEY_DB_PASS"))
-            .connect()*/
-
     before {
-        logger.info("${request.protocol()} ${request.ip()} ${request.requestMethod()} ${request.pathInfo()}?${request.queryString()}")
+        logger.info(
+                "${
+                request.protocol()
+                } ${
+                request.ip()
+                } ${
+                request.requestMethod()
+                } ${
+                request.pathInfo()
+                }${
+                if (request.queryString() != null)
+                    "?${request.queryString()}"
+                else
+                    ""
+                }"
+        )
     }
 
     get("/") {
@@ -114,12 +120,13 @@ fun main(args: Array<String>) {
                 }
 
             val logs = logsRaw.map {
+                @Suppress("UNCHECKED_CAST")
                 Log(
                         it[Logs.event],
                         it[Logs.messageId],
                         it[Logs.content],
                         it[Logs.attachments].toList(),
-                        it[Logs.embeds].map { it.toMap() },
+                        it[Logs.embeds].toList() as List<HashMap<String, Any>>, // FIXME shouldn't this be a JSONObject?
                         it[Logs.timestamp],
                         it[Logs.authorId],
                         it[Logs.authorName],
