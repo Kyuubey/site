@@ -11,9 +11,9 @@
                     <h6 class="truncate" style="font-size:20px;font-weight:lighter;">${data.authorName}#${data.authorDiscrim}</h6>
                     <p class="markup has-emotes" style="word-wrap:break-word;">${data.content}</p>
                     <#list data.embeds as embed>
-                        <#if embed.type == "rich">
+                        <#if embed.type == "RICH">
                             <div class="embed-wrapper">
-                                <div class="embed embed-color z-depth-2" color="${embed.color???then(embed.color, "4095")}"></div>
+                                <div class="embed embed-color z-depth-2" color="${embed.color???then(embed.color.value?split("-")[1], "4095")}"></div>
                                 <div class="embed embed-content z-depth-2">
                                     <div class="inner-content">
                                         <#if embed.author??>
