@@ -6,8 +6,11 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import info.kyubey.site.db.schema.Logs
 import info.kyubey.site.entities.Config
+import info.kyubey.site.entities.DatabaseConfig
 import info.kyubey.site.entities.Log
 import me.aurieh.ares.exposed.async.asyncTransaction
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.html.HtmlRenderer
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.and
@@ -20,13 +23,35 @@ import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-data class Feature(val name: String = "feature", val description: String = "description")
-
-data class Item(val features: List<Feature>, val title: String = "Features")
-
 fun main(args: Array<String>) {
     val mapper = ObjectMapper(YAMLFactory()).apply { registerModule(KotlinModule()) }
-    val config = mapper.readValue<Config>(File("./config.yml"))
+    val config = if (System.getenv("USE_ENV") != null || System.getenv("DYNO") != null) {
+        Config(
+                System.getenv("PORT").toInt(),
+                System.getenv("BOT_INVITE"),
+                System.getenv("GUILD_INVITE"),
+                if (System.getenv("DATABASE_URL") != null) {
+                    val pgUrl = System.getenv("DATABASE_URL").removePrefix("postgres://")
+                    DatabaseConfig(
+                            pgUrl.split("/")[1],
+                            pgUrl.split(":")[0],
+                            pgUrl.split(":")[1].split("@")[0],
+                            pgUrl.split("@")[1].split("/")[0]
+                    )
+                } else
+                    DatabaseConfig(
+                            System.getenv("DATABASE_NAME"),
+                            System.getenv("DATABASE_USER"),
+                            System.getenv("DATABASE_PASS"),
+                            System.getenv("DATABASE_HOST")
+                    )
+        )
+    } else
+        mapper.readValue(File("./config.yml"))
+
+    val mdParser = Parser.builder().build()
+    val htmlRenderer = HtmlRenderer.builder().build()
+
     val logger = LoggerFactory.getLogger("main")
     val db = Database.connect(
             "jdbc:postgresql://${config.database.host}/${config.database.name}",
@@ -66,18 +91,6 @@ fun main(args: Array<String>) {
 
     get("/") {
         val model = HashMap<String, Any>()
-        val items = mutableListOf<Item>()
-
-
-        for (i in 0 until 4) {
-            val features = mutableListOf<Feature>()
-            for (x in 0 until 4) {
-                features.add(Feature("Lorem ipsum", "Lorem ipsum dolor sit amet, appetere gubergren eloquentiam sit id, ne his idque detracto intellegat. Sed an soluta detracto torquatos. Mea ex assum omittam, ne decore iisque scripta usu. Alterum ocurreret vis ne, rebum graeci ut mea."))
-            }
-            items.add(Item(features))
-        }
-
-        model.put("items", items)
 
         try {
             FreeMarkerEngine().render(
@@ -86,6 +99,17 @@ fun main(args: Array<String>) {
         } catch (e: Throwable) {
             e.printStackTrace()
         }
+    }
+
+    get("/documentation") {
+        val model = HashMap<String, Any>()
+
+        val md = mdParser.parse(javaClass.classLoader.getResource("Kyubey_Documentation.md").readText())
+        val html = htmlRenderer.render(md)
+
+        model["docs"] = html
+
+        FreeMarkerEngine().render(ModelAndView(model, "docs.ftl"))
     }
 
     redirect.get("/invite", config.botInvite)
@@ -173,7 +197,7 @@ fun main(args: Array<String>) {
                     }
                     */
 
-            model.put("logs", logs)
+            model["logs"] = logs
 
             FreeMarkerEngine().render(
                     ModelAndView(model, "logs.ftl")

@@ -255,3 +255,11 @@ pre * {
 .dropdown-content li>span>label {
     top: -11px !important;
 }
+
+.features {
+    height: 15rem !important;
+}
+
+.doc-image {
+    max-width: 100%;
+}

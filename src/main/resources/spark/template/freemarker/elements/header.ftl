@@ -8,13 +8,13 @@
                 </div>
                 <div class="col right">
                     <br />
-                    <a class="hide-on-med-and-down waves-effect waves-teal btn-flat" href="/features">Features</a>
+                    <a class="hide-on-med-and-down waves-effect waves-teal btn-flat" href="/documentation">Documentation</a>
                     <a class="hide-on-med-and-down waves-effect waves-teal btn-flat" href="/support">Support</a>
                     <a class="hide-on-med-and-down waves-effect waves-teal btn-flat" href="/faq">FAQ</a>
                     <a class="hide-on-med-and-down waves-effect waves-teal btn kyubey-red" href="/invite">Invite!</a>
                     <ul id="nav-dropdown" class="dropdown-content">
                         <li>
-                            <a href="/features">Features</a>
+                            <a href="/documentation">Documentation</a>
                         </li>
                         <li>
                             <a href="/support">Support</a>
@@ -99,6 +99,21 @@
                 <li>
                     <a class="modal-trigger" href="#filter-modal"><i class="material-icons">filter_list</i></a>
                 </li>
+                <li>
+                    <a href="#"><i class="material-icons">more_vert</i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+</#macro>
+
+<#macro docs page="">
+<header>
+    <nav class="kyubey-red">
+        <div class="nav-wrapper">
+            <a href="/" class="brand-logo" style="font-family:'Anydore';margin-left:10px;">yube Documentation</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
                     <a href="#"><i class="material-icons">more_vert</i></a>
                 </li>
