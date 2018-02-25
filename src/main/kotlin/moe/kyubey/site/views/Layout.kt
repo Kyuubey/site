@@ -1,0 +1,137 @@
+package moe.kyubey.site.views
+
+import kotlinx.html.*
+import kotlinx.html.stream.appendHTML
+import moe.kyubey.site.views.components.*
+import moe.kyubey.site.views.stylesheets.mainStyle
+
+object Layout {
+    private val stylesheet = mainStyle().render()
+
+    fun main(pageTitle: String = "Kyubey", pageDesc: String = "He'll make your Discord magical!", pageName: String? = null, block: DIV.() -> Unit = {}): String {
+        return buildString {
+            appendln("<!DOCTYPE html>")
+            appendHTML().html {
+                head {
+                    meta(charset="UTF-8")
+                    meta("viewport", "width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
+                    meta { attributes["og:title"] = pageTitle }
+                    meta { attributes["og:description"] = pageDesc }
+                    title(pageTitle)
+                    link("//fonts.googleapis.com/css?family=Noto+Sans", "stylesheet")
+                    link("//fonts.googleapis.com/icon?family=Material+Icons", "stylesheet")
+                    link("//use.fontawesome.com/releases/v5.0.6/css/all.css", "stylesheet")
+                    link("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css", "stylesheet")
+                    link("//cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css", "stylesheet")
+                    script("text/javascript", "//code.jquery.com/jquery-3.2.1.min.js") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js") {}
+                    script("text/javascript", "//twemoji.maxcdn.com/2/twemoji.min.js?2.3.0") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.0/markdown-it.min.js") {}
+                    script("text/javascript", "/js/script.min.js") {}
+                    style { type = "text/css"; unsafe { raw(stylesheet) } }
+                }
+                body {
+                    donatePushpin()
+                    mainHeader(pageName)
+                    div {
+                        classes = setOf("section", "kyubey-red")
+                        div {
+                            classes = setOf("container")
+                            block()
+                        }
+                    }
+                    mainFooter()
+                }
+            }
+            appendln()
+        }
+    }
+
+    fun logs(pageTitle: String = "Kyubey - Logs", pageDesc: String = "Message Logs", block: DIV.() -> Unit = {}): String {
+        return buildString {
+            appendln("<!DOCTYPE html>")
+            appendHTML().html {
+                head {
+                    meta(charset="UTF-8")
+                    meta("viewport", "width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
+                    meta { attributes["og:title"] = pageTitle }
+                    meta { attributes["og:description"] = pageDesc }
+                    title(pageTitle)
+                    link("//fonts.googleapis.com/css?family=Noto+Sans", "stylesheet")
+                    link("//fonts.googleapis.com/icon?family=Material+Icons", "stylesheet")
+                    link("//use.fontawesome.com/releases/v5.0.6/css/all.css", "stylesheet")
+                    link("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css", "stylesheet")
+                    link("//cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css", "stylesheet")
+                    script("text/javascript", "//code.jquery.com/jquery-3.2.1.min.js") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js") {}
+                    script("text/javascript", "//twemoji.maxcdn.com/2/twemoji.min.js?2.3.0") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.0/markdown-it.min.js") {}
+                    script("text/javascript", "/js/script.min.js") {}
+                    style { type = "text/css"; unsafe { raw(stylesheet) } }
+                }
+                body {
+                    donatePushpin()
+                    logsHeader()
+                    div {
+                        div {
+                            classes = setOf("section", "kyubey-greyish")
+                            div {
+                                classes = setOf("container")
+                                block()
+                            }
+                        }
+                    }
+                    mainFooter()
+                }
+            }
+            appendln()
+        }
+    }
+
+    fun secondary(pageTitle: String = "Kyubey", pageDesc: String = "He'll make your Discord magical!", pageName: String = "", block: DIV.() -> Unit = {}): String {
+        return buildString {
+            appendln("<!DOCTYPE html>")
+            appendHTML().html {
+                head {
+                    meta(charset="UTF-8")
+                    meta("viewport", "width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
+                    meta { attributes["og:title"] = pageTitle }
+                    meta { attributes["og:description"] = pageDesc }
+                    title(pageTitle)
+                    link("//fonts.googleapis.com/css?family=Noto+Sans", "stylesheet")
+                    link("//fonts.googleapis.com/icon?family=Material+Icons", "stylesheet")
+                    link("//use.fontawesome.com/releases/v5.0.6/css/all.css", "stylesheet")
+                    link("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css", "stylesheet")
+                    link("//cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css", "stylesheet")
+                    script("text/javascript", "//code.jquery.com/jquery-3.2.1.min.js") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js") {}
+                    script("text/javascript", "//twemoji.maxcdn.com/2/twemoji.min.js?2.3.0") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js") {}
+                    script("text/javascript", "//cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.0/markdown-it.min.js") {}
+                    script("text/javascript", "/js/script.min.js") {}
+                    style { type = "text/css"; unsafe { raw(stylesheet) } }
+                }
+                body {
+                    donatePushpin()
+                    secondaryHeader(pageName)
+                    div {
+                        div {
+                            classes = setOf("section", "kyubey-greyish")
+                            div {
+                                classes = setOf("container", "documentation")
+                                block()
+                            }
+                        }
+                    }
+                    mainFooter()
+                }
+            }
+            appendln()
+        }
+    }
+}

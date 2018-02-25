@@ -1,24 +1,23 @@
-package info.kyubey.site
+package moe.kyubey.site
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
-import info.kyubey.site.db.schema.Logs
-import info.kyubey.site.entities.Config
-import info.kyubey.site.entities.DatabaseConfig
-import info.kyubey.site.entities.Log
+import io.javalin.Javalin
+import moe.kyubey.site.db.schema.Logs
+import moe.kyubey.site.entities.Config
+import moe.kyubey.site.entities.DatabaseConfig
+import moe.kyubey.site.entities.Log
 import me.aurieh.ares.exposed.async.asyncTransaction
-import org.commonmark.parser.Parser
-import org.commonmark.renderer.html.HtmlRenderer
+import moe.kyubey.site.views.Documentation
+import moe.kyubey.site.views.Faq
+import moe.kyubey.site.views.Index
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
 import org.slf4j.LoggerFactory
-import spark.ModelAndView
-import spark.kotlin.*
-import spark.template.freemarker.FreeMarkerEngine
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -49,11 +48,7 @@ fun main(args: Array<String>) {
     } else
         mapper.readValue(File("./config.yml"))
 
-    val mdParser = Parser.builder().build()
-    val htmlRenderer = HtmlRenderer.builder().build()
-
-    val logger = LoggerFactory.getLogger("main")
-    val db = Database.connect(
+    Database.connect(
             "jdbc:postgresql://${config.database.host}/${config.database.name}",
             "org.postgresql.Driver",
             config.database.user,
@@ -67,107 +62,42 @@ fun main(args: Array<String>) {
         }
     }
 
-    port(config.port)
-    staticFiles.location("/public")
+    val app = Javalin.create().apply {
+        port(config.port)
+        enableStaticFiles("/public")
+        enableDynamicGzip()
+        enableCorsForAllOrigins()
+        enableStandardRequestLogging()
+    }.start()
 
-    before {
-        logger.info(
-                "${
-                request.protocol()
-                } ${
-                request.ip()
-                } ${
-                request.requestMethod()
-                } ${
-                request.pathInfo()
-                }${
-                if (request.queryString() != null)
-                    "?${request.queryString()}"
-                else
-                    ""
-                }"
-        )
-    }
+    // redirects
+    app.get("/docs") { it.redirect("/documentation") }
+    app.get("/support") { it.redirect(config.guildInvite) }
+    app.get("/invite") { it.redirect(config.botInvite) }
 
-    get("/") {
-        val model = HashMap<String, Any>()
+    // routes
+    app.get("/") { it.html(Index.render()) }
+    app.get("/documentation") { it.html(Documentation.render()) }
+    app.get("/faq") { it.html(Faq.render()) }
+    app.get("/logs/:channel/:timestamp") { ctx ->
+        val timestamp = ctx.param("timestamp")!!.toLong()
 
-        try {
-            FreeMarkerEngine().render(
-                    ModelAndView(model, "index.ftl")
-            )
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
-    }
-
-    get("/documentation") {
-        val model = HashMap<String, Any>()
-
-        val md = mdParser.parse(javaClass.classLoader.getResource("Kyubey_Documentation.md").readText())
-        val html = htmlRenderer.render(md)
-
-        model["docs"] = html
-
-        FreeMarkerEngine().render(ModelAndView(model, "docs.ftl"))
-    }
-
-    redirect.get("/invite", config.botInvite)
-    redirect.get("/support", config.guildInvite)
-
-    get("/faq") {
-        val model = HashMap<String, Any>()
-
-        FreeMarkerEngine().render(
-                ModelAndView(model, "faq.ftl")
-        )
-    }
-
-    get("/logs/:channel/:timestamp") {
-        val model = HashMap<String, Any>()
-        val timestamp = request.params(":timestamp").toLong()
-
-        asyncTransaction(pool) {
+        val html = asyncTransaction(pool) {
             val query = Logs.select {
-                Logs.channelId.eq(request.params(":channel").toLong()) and
-                        Logs.timestamp.between(timestamp - 7200000, timestamp)
-            }.limit(
-                    request.queryParamOrDefault("limit", "100").toIntOrNull() ?: 100
-            )
+                Logs.channelId.eq(ctx.param("channel")!!.toLong()) and Logs.timestamp.between(timestamp - 7200000, timestamp)
+            }.limit(ctx.queryParamOrDefault("limit", "100").toIntOrNull() ?: 100)
+
             var logsRaw: List<ResultRow> = query.toList()
 
-            if (request.queryParams("event") != null)
+            if (ctx.queryParams("event") != null) {
                 logsRaw = logsRaw.filter {
-                    request.queryParamsValues("event").any {
-                        e -> it[Logs.event] == e
-                    }
+                    ctx.queryParams("event")!!.any { e -> it[Logs.event] == e }
                 }
-
-            val logs = logsRaw.map {
-                @Suppress("UNCHECKED_CAST")
-                Log(
-                        it[Logs.event],
-                        it[Logs.messageId],
-                        it[Logs.content],
-                        it[Logs.attachments].toList(),
-                        it[Logs.embeds].toList() as List<HashMap<String, Any>>, // FIXME shouldn't this be a JSONObject?
-                        it[Logs.timestamp],
-                        it[Logs.authorId],
-                        it[Logs.authorName],
-                        it[Logs.authorDiscrim],
-                        it[Logs.authorAvatar],
-                        it[Logs.authorNick],
-                        it[Logs.guildId],
-                        it[Logs.guildName],
-                        it[Logs.channelId],
-                        it[Logs.channelName]
-                )
             }
 
-
+            // TODO filters
             /*if (query != null) {
                 query = query.filter {
-                    // this is safe, trust me
                     (it as Map<String, Any>)["timestamp"].toString().toBigInteger() <= request.params(":timestamp").toBigInteger()
                 }
 
@@ -197,11 +127,30 @@ fun main(args: Array<String>) {
                     }
                     */
 
-            model["logs"] = logs
+            val logs = logsRaw.map {
+                @Suppress("UNCHECKED_CAST")
+                Log(
+                        it[Logs.event],
+                        it[Logs.messageId],
+                        it[Logs.content],
+                        it[Logs.attachments].toList(),
+                        it[Logs.embeds].toList() as List<HashMap<String, Any>>, // FIXME shouldn't this be a JSONObject?
+                        it[Logs.timestamp],
+                        it[Logs.authorId],
+                        it[Logs.authorName],
+                        it[Logs.authorDiscrim],
+                        it[Logs.authorAvatar],
+                        it[Logs.authorNick],
+                        it[Logs.guildId],
+                        it[Logs.guildName],
+                        it[Logs.channelId],
+                        it[Logs.channelName]
+                )
+            }
 
-            FreeMarkerEngine().render(
-                    ModelAndView(model, "logs.ftl")
-            )
+            return@asyncTransaction moe.kyubey.site.views.Logs.render(logs)
         }.execute().get()
+
+        ctx.html(html)
     }
 }

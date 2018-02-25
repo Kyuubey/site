@@ -23,7 +23,7 @@
  *  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package info.kyubey.site.db.schema
+package moe.kyubey.site.db.schema
 
 import me.aurieh.ares.exposed.pg.jsonbArray
 import me.aurieh.ares.exposed.pg.pgArray

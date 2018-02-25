@@ -1,4 +1,4 @@
-package info.kyubey.site.entities
+package moe.kyubey.site.entities
 
 data class Log(
         val event: String,

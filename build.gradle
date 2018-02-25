@@ -1,4 +1,4 @@
-group 'info.kyubey'
+group 'moe.kyubey'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -18,7 +18,7 @@ apply plugin: 'kotlin'
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'application'
 
-mainClassName = 'info.kyubey.site.MainKt'
+mainClassName = 'moe.kyubey.site.MainKt'
 
 repositories {
     mavenCentral()
@@ -31,11 +31,13 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.20'
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:0.20'
-    compile 'com.sparkjava:spark-core:2.6.0'
-    compile 'com.sparkjava:spark-kotlin:1.0.0-alpha'
-    compile 'com.sparkjava:spark-template-freemarker:2.5.5'
+    compile 'azadev.kotlin:aza-kotlin-css:1.0'
+    compile 'org.jetbrains.kotlinx:kotlinx-html-jvm:0.6.8'
+    compile 'io.javalin:javalin:1.3.0'
+
     compile 'org.slf4j:slf4j-api:1.8.0-alpha2'
     compile 'org.slf4j:slf4j-simple:1.8.0-alpha2'
+
     compile 'org.jetbrains.exposed:exposed:0.9.1'
     compile 'org.postgresql:postgresql:42.1.4'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
