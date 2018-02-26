@@ -10,15 +10,19 @@ import moe.kyubey.site.entities.Config
 import moe.kyubey.site.entities.DatabaseConfig
 import moe.kyubey.site.entities.Log
 import me.aurieh.ares.exposed.async.asyncTransaction
-import moe.kyubey.site.views.Documentation
-import moe.kyubey.site.views.Faq
-import moe.kyubey.site.views.Index
+import moe.kyubey.site.entities.DiscordConfig
+import moe.kyubey.site.utils.DiscordAuth
+import moe.kyubey.site.views.*
+import okhttp3.*
+import org.eclipse.jetty.util.MultiMap
+import org.eclipse.jetty.util.UrlEncoded
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
-import org.slf4j.LoggerFactory
+import org.json.JSONObject
 import java.io.File
+import java.nio.charset.Charset
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -29,6 +33,12 @@ fun main(args: Array<String>) {
                 System.getenv("PORT").toInt(),
                 System.getenv("BOT_INVITE"),
                 System.getenv("GUILD_INVITE"),
+                DiscordConfig(
+                        System.getenv("CLIENT_ID"),
+                        System.getenv("CLIENT_SECRET"),
+                        System.getenv("CALLBACK_URL"),
+                        System.getenv("ADMINS").split(",\\s?".toRegex())
+                ),
                 if (System.getenv("DATABASE_URL") != null) {
                     val pgUrl = System.getenv("DATABASE_URL").removePrefix("postgres://")
                     DatabaseConfig(
@@ -61,7 +71,7 @@ fun main(args: Array<String>) {
             }
         }
     }
-
+    val okhttp = OkHttpClient()
     val app = Javalin.create().apply {
         port(config.port)
         enableStaticFiles("/public")
@@ -70,15 +80,81 @@ fun main(args: Array<String>) {
         enableStandardRequestLogging()
     }.start()
 
+    DiscordAuth.config = config
+
     // redirects
     app.get("/docs") { it.redirect("/documentation") }
     app.get("/support") { it.redirect(config.guildInvite) }
     app.get("/invite") { it.redirect(config.botInvite) }
+    app.get("/login/discord") {
+        if (!it.sessionAttribute<String?>("access_token").isNullOrEmpty())
+            it.redirect("/dashboard")
+        else
+            it.redirect(HttpUrl.Builder().apply {
+                scheme("https")
+                host("discordapp.com")
+                addPathSegment("api")
+                addPathSegment("oauth2")
+                addPathSegment("authorize")
+                addQueryParameter("client_id", config.discord.clientId)
+                addQueryParameter("redirect_uri", config.discord.redirectUri)
+                addQueryParameter("response_type", "code")
+                addQueryParameter("scope", "identify guilds")
+            }.build().toString())
+    }
+    app.get("/authorize/discord") { ctx ->
+        val code = ctx.queryParam("code")
+
+        if (code != null) {
+            val json = DiscordAuth.exchangeCode(code)
+
+            if (json.has("error")) {
+                ctx.redirect("/login?fail=true&message=${json.getString("error")}")
+            } else {
+                ctx.sessionAttribute("access_token", json.getString("access_token"))
+                ctx.redirect("/dashboard")
+            }
+        } else {
+            ctx.status(400).html("<h1>400 Bad request</h1>")
+        }
+    }
 
     // routes
     app.get("/") { it.html(Index.render()) }
     app.get("/documentation") { it.html(Documentation.render()) }
     app.get("/faq") { it.html(Faq.render()) }
+    app.get("/login") {
+        if (!it.sessionAttribute<String?>("access_token").isNullOrEmpty())
+            it.redirect("/dashboard")
+        else
+            it.html(Login.render())
+    }
+    app.get("/logout") {
+        it.sessionAttribute("access_token", "")
+        it.redirect("/")
+    }
+    app.get("/dashboard") { ctx ->
+        val token = ctx.sessionAttribute<String?>("access_token")
+
+        if (!token.isNullOrEmpty()) {
+            val user = DiscordAuth.getUser(token!!)
+
+            ctx.html("<h1>Hello ${user.getString("username")}#${user.getString("discriminator")}!</h1>")
+        } else {
+            ctx.redirect("/login")
+        }
+    }
+    app.get("/admin/dashboard") { ctx ->
+        val token = ctx.sessionAttribute<String?>("access_token")
+
+        if (!token.isNullOrEmpty()) {
+            val user = DiscordAuth.getUser(token!!)
+
+            ctx.html(AdminDashboard.render(user))
+        } else {
+            ctx.redirect("/login")
+        }
+    }
     app.get("/logs/:channel/:timestamp") { ctx ->
         val timestamp = ctx.param("timestamp")!!.toLong()
 

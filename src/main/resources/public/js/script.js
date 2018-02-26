@@ -6,7 +6,7 @@ function emoteParser (string, customClass) {
         string = string.innerHTML;
     }
 
-    const regex = /&lt;\:([^:]+)\:(\d+)&gt;/i;
+    const regex = /&lt;:([^:]+):(\d+)&gt;/i;
 
     while (regex.test(string)) {
         const matches = string.match(regex);

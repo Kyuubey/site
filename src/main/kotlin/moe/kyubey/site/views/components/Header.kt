@@ -85,9 +85,7 @@ fun BODY.mainHeader(pageName: String? = null) {
                             h5 { +"He'll make your Discord magical!" }
                             a("/invite") {
                                 classes = setOf("waves-effect", "waves-light", "btn", "kyubey-red")
-                                i {
-                                    classes = setOf("left", "fas", "fa-sign-in-alt")
-                                }
+                                i { classes = setOf("left", "fas", "fa-sign-in-alt") }
                                 +"Invite!"
                             }
                         } else {
@@ -254,9 +252,9 @@ fun BODY.secondaryHeader(pageName: String = "") {
                 classes = setOf("nav-wrapper")
                 a("/") {
                     classes = setOf("brand-logo")
-                    style = "font-family:'Anydore';margin-left:10px;"
+                    style = "margin-left:10px;"
                     span {
-                        style = "font-family:'Anydore';margin-left:10px;"
+                        style = "font-family:'Anydore';"
                         +"\uE014yube\uE137"
                     }
                     span {
@@ -272,6 +270,36 @@ fun BODY.secondaryHeader(pageName: String = "") {
                             i {
                                 classes = setOf("fas", "fa-ellipsis-v")
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun BODY.adminHeader() {
+    header {
+        nav {
+            classes = setOf("nav-wrapper")
+            a("/") {
+                classes = setOf("brand-logo", "center")
+                span {
+                    style = "font-family:'Anydore';"
+                    +"\uE014yube\uE137"
+                }
+                span {
+                    style = "font-size:25px;"
+                    +" Admin"
+                }
+            }
+            ul {
+                classes = setOf("left")
+                li {
+                    a("#") {
+                        style = "line-height:4.75rem;"
+                        i {
+                            classes = setOf("fas", "fa-bars")
                         }
                     }
                 }

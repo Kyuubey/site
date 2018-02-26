@@ -255,5 +255,39 @@ fun mainStyle(): Stylesheet {
         ".btn-floating".i {
             fontSize = "1.25rem"
         }
+
+        ".admin-cards" {
+            " .card" {
+                height = 250.px
+            }
+        }
+
+        "#terminal-overlay" {
+            backgroundColor = BLACK
+            position = ABSOLUTE
+            left = 0
+            right = 0
+            bottom = 0
+            height = 248.px // 144
+
+            " #toolbar" {
+                height = 48.px
+                backgroundColor = 0xEBEBEB
+                boxShadow = "0 0 2px gray"
+
+                " .toolbar-item" {
+                    lineHeight = 50.px
+                    height = 100.percent
+                }
+            }
+
+            " .terminal-container" {
+                height = 200.px// 98
+
+                " #terminal" {
+                    height = 100.percent
+                }
+            }
+        }
     }
 }
