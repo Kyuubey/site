@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
                         System.getenv("CLIENT_ID"),
                         System.getenv("CLIENT_SECRET"),
                         System.getenv("CALLBACK_URL"),
-                        System.getenv("ADMINS").split(",\\s?".toRegex())
+                        System.getenv("ADMINS").split("::")
                 ),
                 if (System.getenv("DATABASE_URL") != null) {
                     val pgUrl = System.getenv("DATABASE_URL").removePrefix("postgres://")
@@ -121,6 +121,7 @@ fun main(args: Array<String>) {
 
     // routes
     app.get("/") { it.html(Index.render()) }
+    app.get("/about") { it.html(About.render()) }
     app.get("/documentation") { it.html(Documentation.render()) }
     app.get("/faq") { it.html(Faq.render()) }
     app.get("/login") {
