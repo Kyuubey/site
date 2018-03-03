@@ -14,7 +14,7 @@ fun BODY.mainFooter() {
                         classes = setOf("col", "left")
                         ul {
                             li {
-                                a("/faq") {
+                                a("https://blog.kyubey.moe") {
                                     classes = setOf("btn-floating", "kyubey-red")
                                     i {
                                         classes = setOf("fas", "fa-edit")

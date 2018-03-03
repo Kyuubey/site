@@ -24,10 +24,10 @@ fun BODY.mainHeader(pageName: String? = null) {
                     div {
                         classes = setOf("col", "right")
                         br
-                        a("/documentation") {
+                        /*a("https://blog.kyubey.moe") {
                             classes = setOf("hide-on-med-and-down", "waves-effect", "waves-teal", "btn-flat")
-                            +"Documentation"
-                        }
+                            +"Blog"
+                        }*/
                         a("/support") {
                             classes = setOf("hide-on-med-and-down", "waves-effect", "waves-teal", "btn-flat")
                             +"Support"
@@ -44,9 +44,9 @@ fun BODY.mainHeader(pageName: String? = null) {
                             id = "nav-dropdown"
                             classes = setOf("dropdown-content")
                             li {
-                                a("/documentation") {
-                                    +"Docs"
-                                }
+                                /*a("https://blog.kyubey.moe") {
+                                    +"Blog"
+                                }*/
                                 a("/support") {
                                     +"Support"
                                 }
@@ -98,7 +98,7 @@ fun BODY.mainHeader(pageName: String? = null) {
     }
 }
 
-fun BODY.logsHeader(pageName: String = "\uE014yube\uE137") {
+fun BODY.logsHeader() {
     div {
         classes = setOf("modal")
         id = "filter-modal"
