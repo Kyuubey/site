@@ -21,4 +21,4 @@ USER 1000
 
 WORKDIR /opt/app
 
-CMD ["/bin/sh", "-c", "java", "-jar", "./KyubeySite.jar"]
+CMD ["java", "-jar", "./KyubeySite.jar"]
