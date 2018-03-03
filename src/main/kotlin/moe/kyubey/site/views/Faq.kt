@@ -55,8 +55,8 @@ object Faq : View {
                                 +"If an argument has brackets [] it is not required, else the argument is required"
                                 br
                                 +"The things after the colons are the argument types, you probably don't have to look at those as the argument names explain those anyway."
-                                br
-                                +"More info can be found in the documentation!"
+                                // br
+                                // +"More info can be found in the documentation!"
                             }
                         }
                     }

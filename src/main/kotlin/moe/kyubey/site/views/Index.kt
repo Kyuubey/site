@@ -15,28 +15,28 @@ object Index : View {
                     div {
                         classes = setOf("carousel-item", "kyubey-red", "white-text")
                         h2 {
-                            +"Title"
+                            +"Music"
                         }
                         p {
-                            +"Description"
+                            +"Music that works, free, for everyone."
                         }
                     }
                     div {
                         classes = setOf("carousel-item", "kyubey-red", "white-text")
                         h2 {
-                            +"Title"
+                            +"Fun"
                         }
                         p {
-                            +"Description"
+                            +"Generate a meme, hug someone or create custom commands using Lua. Kyubey makes your server fun for everyone!"
                         }
                     }
                     div {
                         classes = setOf("carousel-item", "kyubey-red", "white-text")
                         h2 {
-                            +"Title"
+                            +"Moderation"
                         }
                         p {
-                            +"Description"
+                            +"From banning to muting, adblocker to modlogs, Kyubey has everything you need to keep your server safe."
                         }
                     }
                 }
