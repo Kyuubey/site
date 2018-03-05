@@ -33,7 +33,7 @@ object Logs : View {
                     classes = setOf("row")
                     div {
                         classes = setOf("col s12")
-                        ul { for (log in logs) logMessage(log) }
+                        ul { for (log in logs.asReversed()) logMessage(log) }
                     }
                 }
             } else {
