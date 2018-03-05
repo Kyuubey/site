@@ -50,9 +50,9 @@ fun UL.logMessage(log: Log) {
                                         div {
                                             classes = setOf("embed", "embed-color", "z-depth-2")
                                             attributes["color"] = if ("color" in it) {
-                                                val color = it["color"] as Map<String, Any>
+                                                val color = it["color"] as Int
 
-                                                color["value"] as String
+                                                color.toString()
                                             } else
                                                 "4096"
                                         }
