@@ -7,6 +7,8 @@ import moe.kyubey.site.views.stylesheets.mainStyle
 
 object Layout {
     private val stylesheet = mainStyle().render()
+    private const val KEYWORDS = "kyubey, discord, music, bot, logs, fun, nsfw, custom commands, contract"
+    private const val DESCRIPTION = "A fun Discord bot with features like music, memes, custom commands and more!"
 
     fun main(pageTitle: String = "Kyubey", pageDesc: String = "He'll make your Discord magical!", pageName: String? = null, block: DIV.() -> Unit = {}): String {
         return buildString {
@@ -17,6 +19,9 @@ object Layout {
                     meta("viewport", "width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
                     meta { attributes["og:title"] = pageTitle }
                     meta { attributes["og:description"] = pageDesc }
+                    meta { name = "keywords"; content = KEYWORDS }
+                    meta { name = "description"; content = DESCRIPTION }
+                    meta { name = "google-site-verification"; content = "FRAz8Nsa7l05see2iXE8juZhZ8XcXJx9-ZOIjdHmDOw" }
                     title(pageTitle)
                     link("//fonts.googleapis.com/css?family=Noto+Sans", "stylesheet")
                     link("//fonts.googleapis.com/icon?family=Material+Icons", "stylesheet")
@@ -101,6 +106,8 @@ object Layout {
                     meta("viewport", "width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
                     meta { attributes["og:title"] = pageTitle }
                     meta { attributes["og:description"] = pageDesc }
+                    meta { name = "keywords"; content = KEYWORDS }
+                    meta { name = "description"; content = DESCRIPTION }
                     title(pageTitle)
                     link("//fonts.googleapis.com/css?family=Noto+Sans", "stylesheet")
                     link("//fonts.googleapis.com/icon?family=Material+Icons", "stylesheet")
@@ -144,6 +151,8 @@ object Layout {
                     meta("viewport", "width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
                     meta { attributes["og:title"] = pageTitle }
                     meta { attributes["og:description"] = pageDesc }
+                    meta { name = "keywords"; content = KEYWORDS }
+                    meta { name = "description"; content = DESCRIPTION }
                     title(pageTitle)
                     link("//fonts.googleapis.com/css?family=Noto+Sans", "stylesheet")
                     link("//fonts.googleapis.com/icon?family=Material+Icons", "stylesheet")
