@@ -162,7 +162,7 @@ fun main(args: Array<String>) {
         val html = asyncTransaction(pool) {
             val query = Logs.select {
                 Logs.channelId.eq(ctx.param("channel")!!.toLong()) and Logs.timestamp.between(timestamp - 7200000, timestamp)
-            }.limit(ctx.queryParamOrDefault("limit", "100").toIntOrNull() ?: 100)
+            }.orderBy(Logs.timestamp to false).limit(ctx.queryParamOrDefault("limit", "100").toIntOrNull() ?: 100)
 
             var logsRaw: List<ResultRow> = query.toList()
 
