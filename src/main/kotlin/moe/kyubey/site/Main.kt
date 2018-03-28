@@ -164,7 +164,7 @@ fun main(args: Array<String>) {
                 Logs.channelId.eq(ctx.param("channel")!!.toLong()) and Logs.timestamp.between(timestamp - 7200000, timestamp)
             }.orderBy(Logs.timestamp to false).limit(ctx.queryParamOrDefault("limit", "100").toIntOrNull() ?: 100)
 
-            var logsRaw: List<ResultRow> = query.toList()
+            var logsRaw: List<ResultRow> = query.toList().asReversed()
 
             if (ctx.queryParams("event") != null) {
                 logsRaw = logsRaw.filter {
