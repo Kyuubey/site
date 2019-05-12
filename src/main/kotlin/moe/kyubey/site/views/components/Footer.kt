@@ -27,7 +27,7 @@ fun BODY.mainFooter() {
                             }
                             li { br }
                             li {
-                                a("https://patreon.com/noud") {
+                                a("https://patreon.com/yuwui") {
                                     classes = setOf("btn-floating", "kyubey-red")
                                     i {
                                         classes = setOf("fas", "fa-dollar-sign")
@@ -92,12 +92,12 @@ fun BODY.mainFooter() {
                                 }
                             }
                             li {
-                                a("https://noud.moe") {
+                                a("https://yui.pet") {
                                     classes = setOf("black-text")
                                     i {
                                         classes = setOf("fas fa-server")
                                     }
-                                    +" noud.moe"
+                                    +" yui.pet"
                                 }
                             }
                         }

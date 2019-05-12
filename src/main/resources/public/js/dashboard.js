@@ -87,5 +87,5 @@ $(document).ready(function() {
         }
     }
 
-    term.write("noud@kyubey:~$ ")
+    term.write("yui@kyubey:~$ ")
 });

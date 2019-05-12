@@ -38,7 +38,7 @@ object Faq : View {
                         div {
                             classes = setOf("collapsible-body", "white")
                             h6 { +"You can execute a command like this:" }
-                            blockQuote { code { +"kyubey pls hug @noud02#0080" } }
+                            blockQuote { code { +"kyubey pls hug @yuwui#0080" } }
                         }
                     }
                     li {

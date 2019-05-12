@@ -22,18 +22,13 @@ object About : View {
                                 +"Kyubey is a free and open-source Discord bot, made for fun."
                                 br
                                 br
-                                +"Kyubey was started by Noud Kerver back in September 2016 as a nonprofit Discord bot."
-                                br
-                                +"Kyubey's goal is to become one of the greatest Discord bots."
-                                br
-                                br
-                                +"Even though Kyubey started as closed-source, all repositories are now open-source."
+                                +"Developemnt of Kyubey was started back in September 2016."
                             }
                         }
                         div {
                             classes = setOf("card-action")
-                            a("https://github.com/noud02/Akatsuki") { +"GitHub" }
-                            a("mailto:noud.kerver@hotmail.nl") { +"Contact" }
+                            a("https://github.com/Kyuubey/Akatsuki") { +"GitHub" }
+                            a("mailto:contact@kyubey.moe") { +"Contact" }
                         }
                     }
                 }
