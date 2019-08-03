@@ -39,7 +39,7 @@ fun BODY.donatePushpin() {
             }
             p {
                 a("https://patreon.com/yuwui") {
-                    classes = setOf("link", "kyubey-greyish-text")
+                    classes = setOf("kyubey-greyish-text")
                     style = "font-size:12px;"
                     +"Or become a patreon!"
                 }
