@@ -2,6 +2,7 @@ package moe.kyubey.site.views
 
 import moe.kyubey.site.entities.Log
 import moe.kyubey.site.entities.View
+import moe.kyubey.site.utils.LogSorter
 import moe.kyubey.site.views.components.logMessage
 import kotlinx.html.*
 
@@ -33,7 +34,7 @@ object Logs : View {
                     classes = setOf("row")
                     div {
                         classes = setOf("col s12")
-                        ul { for (log in logs.asReversed()) logMessage(log) }
+                        ul { for (log in logs.sortedWith(LogSorter).asReversed()) logMessage(log) }
                     }
                 }
             } else {

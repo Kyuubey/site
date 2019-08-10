@@ -10,7 +10,7 @@ object Layout {
     private const val KEYWORDS = "kyubey, discord, music, bot, logs, fun, nsfw, custom commands, contract"
     private const val DESCRIPTION = "A fun Discord bot with features like music, memes, custom commands and more!"
 
-    fun main(pageTitle: String = "Kyubey", pageDesc: String = "He'll make your Discord magical!", pageName: String? = null, block: DIV.() -> Unit = {}): String {
+    fun main(pageTitle: String = "Kyubey", pageDesc: String = "They'll make your Discord magical!", pageName: String? = null, block: DIV.() -> Unit = {}): String {
         return buildString {
             appendln("<!DOCTYPE html>")
             appendHTML().html {

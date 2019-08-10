@@ -56,6 +56,14 @@ fun mainStyle(): Stylesheet {
             color = "#DB79FB !important"
         }
 
+        ".kyubey-green" {
+            backgroundColor = "#A5D6A7 !important"
+        }
+
+        ".kyubey-green-text" {
+            color = "#A5D6A7 !important"
+        }
+
         a.c("link").hover {
             cursor = POINTER
             textDecoration = UNDERLINE

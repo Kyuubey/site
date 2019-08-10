@@ -8,7 +8,7 @@ import java.util.*
 fun UL.logMessage(log: Log) {
     val color = when (log.event) {
         "CREATE" -> "white"
-        "UPDATE" -> "kyubey-pink"
+        "UPDATE" -> "kyubey-green"
         "DELETE" -> "kyubey-red"
         else -> "kyubey-greyish"
     }
